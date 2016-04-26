@@ -65,5 +65,14 @@ public class post
          return atribute;
         
      }
+     public static String escapeString(String s)
+    {
+       if(s.contains("<"))
+       {
+           s = s.replaceAll("<", "&lt");
+           s = s.replaceAll(">", "&gt");
+       }
+       return s;
+    }
     
 }

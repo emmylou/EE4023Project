@@ -111,17 +111,11 @@ public class AddCartBean implements Serializable {
      */
     public String checkout()
     {   
-        String sessionToken=SessionBean.getToken();//gets the generated token from the session
-        String passedToken=post.getHidden("tokenPassCart");//gets the generated token from hidden form field
-         if(sessionToken.equalsIgnoreCase(passedToken))//match the tokens if the tokens do not match thats mean the form  comings from a mirror site and denie accses
-       {
+     
         order = cart.getItemList().replace("<br>", "");
         cart.checkout();
         return "checkout";
-       }
-         else
-             return "error";
-            
+      
     }
 
     /**

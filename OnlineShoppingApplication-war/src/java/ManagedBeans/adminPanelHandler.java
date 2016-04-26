@@ -73,10 +73,15 @@ public class adminPanelHandler {
     }
    public void storeProduct()
    {
+       //A8: Cross Site Request Forgery (CSRF)
        this.sessionToken=SessionBean.getToken();//gets the generated token from the session
        this.passedToken=post.getHidden("tokenPass");//gets the generated token from hidden form field
-       if(sessionToken.equalsIgnoreCase(passedToken))//match the tokens if the tokens do not match thats mean the form  comings from a mirror site and denie accses
+       String userType=SessionBean.getUserType();
+       if(sessionToken.equalsIgnoreCase(passedToken) && userType.equalsIgnoreCase("admin") )//match the tokens if the tokens do not match thats mean the form  comings from a mirror site and denie accses
        {
+         this.productTitle= post.escapeString(this.productTitle);
+         this.productQuantity=post.escapeString(this.productQuantity);
+         this.cost=post.escapeString(this.cost);
        productBean.addProduct(this.productTitle, this.productQuantity,this.cost);//call a method from injected Bean 
        this.actionMessage="Product: "+this.productTitle+" Quantity:"+this.productQuantity+" Succsefuly added to DB";
        }

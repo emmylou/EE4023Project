@@ -44,4 +44,10 @@ public static HttpSession getSession() {
 				.getExternalContext().getSession(true);
 		return session.getAttribute("token").toString();
 	}
+          public static String getUserType()
+        {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+				.getExternalContext().getSession(true);
+		return session.getAttribute("type").toString();
+	}
 }

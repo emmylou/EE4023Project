@@ -75,6 +75,7 @@ public class login {
                           session.setAttribute("username", user);
                           session.setAttribute("type","admin");//assign the uset type to the session as needs to be checked ,no user should have accses to admin panel
                           session.setAttribute("token",post.getToken());
+                          session.setMaxInactiveInterval(20*60);
                           return "adminPanel";//redirect to correct user page"admin panel
                       }
                        else
@@ -84,6 +85,7 @@ public class login {
                           session.setAttribute("username", user);
                           session.setAttribute("type","user");
                           session.setAttribute("token",post.getToken());
+                          session.setMaxInactiveInterval(20*60);
                      
                           return "admin";//redirect to normal user start page
                       }
