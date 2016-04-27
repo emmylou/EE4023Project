@@ -10,7 +10,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Rock n Roll
+ * @author
  */
 @Local
 public interface ShoppingCartBeanLocal

@@ -13,7 +13,7 @@ import javax.ejb.Stateful;
 
 /**
  *
- * @author Rock n Roll
+ * @author 
  */
 @Stateful
 public class ShoppingCartBean implements ShoppingCartBeanLocal
