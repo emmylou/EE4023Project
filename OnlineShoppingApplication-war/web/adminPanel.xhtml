@@ -74,6 +74,11 @@
         <h3>
         <h:outputText value="#{adminPanelHandler.actionMessage}" />
         </h3>
+        
+        <h:form>
+        <h:commandButton action="#{login.logout()}"
+			value="Log Out"/>
+        </h:form>
     </h:body>
 </html>
 
