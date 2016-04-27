@@ -153,6 +153,17 @@ public class adminPanelHandler {
         
         
     }
+    public void adminAcsses()
+    {
+         String userType=SessionBean.getUserType();
+         if(!userType.equalsIgnoreCase("admin"))
+         {
+             post.postRedirect("./error.xhtml");
+         }
+         
+             
+        
+    }
     public adminPanelHandler()
     {
       //  productBean.addProduct(productTitle, productQuantity);
