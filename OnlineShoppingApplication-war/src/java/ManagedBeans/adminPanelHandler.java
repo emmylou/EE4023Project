@@ -148,7 +148,11 @@ public class adminPanelHandler {
        else
              post.postRedirect("./error.xhtml");
    }
-           
+    public void logOut()
+    {
+        
+        
+    }
     public adminPanelHandler()
     {
       //  productBean.addProduct(productTitle, productQuantity);
