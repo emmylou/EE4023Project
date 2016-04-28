@@ -17,6 +17,7 @@
 	                <f:selectItem itemValue="2" itemLabel="Admin" />
 	            </h:selectOneRadio>
                 <br />
+                <h:commandButton action ="#{userBean.initialize()}" value="UserInit" disabled="#{userBean.isUserExist()}"/>
                 <br />
 		<h:outputText value="Username  " />
 		<h:inputText id="username" value="#{login.user}"></h:inputText>
