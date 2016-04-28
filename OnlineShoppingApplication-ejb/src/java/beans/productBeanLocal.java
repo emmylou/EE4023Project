@@ -9,7 +9,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Rock n Roll
+ * @author Emmylou Flores 12132403
  */
 @Local
 public interface productBeanLocal {

@@ -16,7 +16,7 @@ import statics.post;
 
 /**
  *
- * @author Rock n Roll
+ * @author Emmylou Flores 12132403
  */
 @ManagedBean
 @SessionScoped
@@ -73,7 +73,6 @@ public class adminPanelHandler {
     }
    public void storeProduct()
    {
-       //A8: Cross Site Request Forgery (CSRF)
        this.sessionToken=SessionBean.getToken();//gets the generated token from the session
        this.passedToken=post.getHidden("tokenPass");//gets the generated token from hidden form field
        String userType=SessionBean.getUserType();
@@ -148,7 +147,22 @@ public class adminPanelHandler {
        else
              post.postRedirect("./error.xhtml");
    }
-           
+    public void logOut()
+    {
+        
+        
+    }
+    public void adminAcsses()
+    {
+         String userType=SessionBean.getUserType();
+         if(!userType.equalsIgnoreCase("admin"))
+         {
+             post.postRedirect("./error.xhtml");
+         }
+         
+             
+        
+    }
     public adminPanelHandler()
     {
       //  productBean.addProduct(productTitle, productQuantity);

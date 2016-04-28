@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Rock n Roll
+ * @author Emmylou Flores 12132403
  */
 @WebFilter("/RequestFilter")
 public class RequestFilter implements Filter {

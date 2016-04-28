@@ -13,7 +13,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Fierce
  */
-@ManagedBean(name = "checkOutBean")
+@ManagedBean
 @SessionScoped
 public class checkOut 
 {

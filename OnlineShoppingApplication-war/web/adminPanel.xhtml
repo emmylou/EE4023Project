@@ -4,7 +4,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Facelet Title</title>
-         <link rel="stylesheet" href="style.css" type="text/css" />
+        <link rel="stylesheet" href="style.css" type="text/css" />
+        
+        #{adminPanelHandler.adminAcsses()}
     </h:head>
     <h:body>
         
@@ -74,6 +76,11 @@
         <h3>
         <h:outputText value="#{adminPanelHandler.actionMessage}" />
         </h3>
+        
+        <h:form>
+        <h:commandButton action="#{login.logout()}"
+			value="Log Out"/>
+        </h:form>
     </h:body>
 </html>
 
