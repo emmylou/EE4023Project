@@ -5,8 +5,11 @@ package LoginPackage;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import beans.NewUserBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -20,7 +23,10 @@ import statics.post;
  */
 @ManagedBean
 @SessionScoped
-public class login {
+public class login implements Serializable {
+    
+    @EJB
+    private NewUserBeanLocal newUserBean;
 
     /**
      * Creates a new instance of login
@@ -32,11 +38,12 @@ public class login {
         private String pwd;
 	private String msg;
 	private String user;
+        private String userType;
         private String token;
 
-    public String getToken() {
-        return token;
-    }
+        public String getToken() {
+            return token;
+        }
 
 	public String getPwd() {
 		return pwd;
@@ -61,11 +68,19 @@ public class login {
 	public void setUser(String user) {
 		this.user = user;
 	}
+        
+        public String getUserType() {
+            return userType;
+        }
 
+        public void setUserType(String userType) {
+            this.userType = userType;
+        }
+        
 	//validate login
 	public String validateUsernamePassword() 
         {
-		boolean valid = validate(user, pwd);
+		boolean valid = newUserBean.validate(user, pwd);
 		if (valid) {
 			HttpSession session = SessionBean.getSession();
                       if(user.equalsIgnoreCase("toor"))//if user logged in redirect to admin pane;
@@ -95,7 +110,7 @@ public class login {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Incorrect Username and Passowrd"+user+" "+pwd+" "+valid,
+							"Incorrect Username and Passowrd",
 							"Please enter correct username and Password"));
 			return "login";
 		}
@@ -108,7 +123,7 @@ public class login {
 		return "login";
 	}
         
-        private static boolean validate(String user, String pwd)
+      /*  private static boolean validate(String user, String pwd)
         {
           if(user.equals("joe") & pwd.equals("1D10T?"))
           {
@@ -122,7 +137,7 @@ public class login {
           {
            return false;
           }
-        }
+        }*/
 
     /**
      *

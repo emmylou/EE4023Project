@@ -14,7 +14,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
-import enterpriseBean.ShoppingCart;
+import beans.ShoppingCartLocal;
 import java.util.HashMap;
 import statics.post;
 
@@ -58,7 +58,7 @@ public class AddCartBean implements Serializable {
     // use dependency injection to connect to
     // stateful session bean ShoppingCartBean
     @EJB
-    ShoppingCart cart;
+    ShoppingCartLocal cart;
 
     /**
      * Creates a new instance of ShoppingBean
