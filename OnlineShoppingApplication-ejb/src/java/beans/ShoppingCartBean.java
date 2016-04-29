@@ -132,6 +132,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         else
         {
             //display error to customer that order was not successful
+            clearItems();
             System.out.println("Order invalid");
         }
     }
