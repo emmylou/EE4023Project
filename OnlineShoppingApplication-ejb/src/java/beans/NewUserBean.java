@@ -21,6 +21,7 @@ import javax.persistence.Query;
 public class NewUserBean implements NewUserBeanLocal {
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
+    private String userName;
 
     /**
      * Adds a new customer to the database with given name and city. Note:
@@ -58,6 +59,18 @@ public class NewUserBean implements NewUserBeanLocal {
         // return id of new customer
         return 1;
 
+    }
+    
+    @Override
+    public void setUserName(String username)
+    {
+        this.userName = username;
+    }
+    
+    @Override
+    public String getUserName()
+    {
+        return this.userName;
     }
     
     /**

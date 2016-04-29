@@ -25,4 +25,6 @@ public interface NewUserBeanLocal {
     public boolean update(long id, String username, String address, String message);
     public List<G13USERS> getCustomerListByName(String name);
     public List<G13USERS> getCustomerListByID(long id);
+    public void setUserName(String userName);
+    public String getUserName();
 }

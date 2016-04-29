@@ -5,6 +5,7 @@
  */
 package beans;
 
+import beans.NewUserBean;
 import Ent.Product;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,12 +29,11 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
-
-    private HashMap<String, Integer> items = new HashMap<>();
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
+    private HashMap<String, Integer> items = new HashMap<>();
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(ShoppingCartBean.class.getName());
+    private String userName;
     
     @Override
     public HashMap<String, Integer> getCartItems() {
@@ -77,6 +77,8 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     //@Remove
     public void checkout() 
     {
+        NewUserBean nb = new NewUserBean();
+        this.userName = nb.getUserName();
         runCheckOut();
         //items.clear();
     }
@@ -121,26 +123,24 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     @Override
     public void runCheckOut()
     {
-        System.out.println("ShoppingCartBean: runCheckOut()");
         //Logging logFile;
         if(checkIfValidOrder())
         {
             //valid order so update the DB
             updateDB();
-            writeToLogFile("Joe", "Confirmed");
+            
+            writeToLogFile(this.userName, "Confirmed");
         }
         else
         {
             //display error to customer that order was not successful
             clearItems();
-            System.out.println("Order invalid");
         }
     }
     
     @Override
     public void writeToLogFile(String user, String status)
     {
-        System.out.println("ShoppingCartBean: writeToLogFile()");
         LOGGER.info("Logger Name:" + LOGGER.getName());
         String value = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", "User", "|Product", "|Quantity", "|Status");
         LOGGER.info(value);
@@ -156,7 +156,6 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     @Override
     public boolean checkIfValidOrder()
     {        
-        System.out.println("ShoppingCartBean: checkIfValidOrder()");
         Iterator it = items.entrySet().iterator();
         while (it.hasNext()) 
         {
@@ -172,7 +171,6 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
                 int orderQty = Integer.parseInt(pair.getValue().toString());
                 if(isin.get(0).getQuantityOnHand() < orderQty)
                 {
-                    System.out.println("Inside loop to check orders, invalid order!");
                     return false;
                 }
             }  
