@@ -14,7 +14,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
-import beans.ShoppingCartLocal;
+import beans.ShoppingCartBeanLocal;
 import java.util.HashMap;
 import statics.post;
 
@@ -26,6 +26,8 @@ import statics.post;
 @SessionScoped
 public class AddCartBean implements Serializable {
 
+    @EJB
+    ShoppingCartBeanLocal shoppingCartBean;
     /**
      * Creates a new instance of AddCartBean
      */
@@ -57,23 +59,23 @@ public class AddCartBean implements Serializable {
     private String order = "";
     // use dependency injection to connect to
     // stateful session bean ShoppingCartBean
-    @EJB
-    ShoppingCartLocal cart;
+    //@EJB
+    //ShoppingCartBeanLocal shoppingCartBean;
 
     /**
      * Creates a new instance of ShoppingBean
      */
 
     /**
-     * Adds new items to the shopping cart - quantities are taken from instance
+     * Adds new items to the shopping shoppingCartBean - quantities are taken from instance
      * variables
      */
     public void addToBasket(String pName, int quantityVar) {
-       // cart.addItem("PC", quantityPC);
-       // cart.addItem("Monitor", quantityMonitor);
-       // cart.addItem("Printer", quantityPrinter);
+       // shoppingCartBean.addItem("PC", quantityPC);
+       // shoppingCartBean.addItem("Monitor", quantityMonitor);
+       // shoppingCartBean.addItem("Printer", quantityPrinter);
         
-        cart.addItem(pName, quantityVar);
+        shoppingCartBean.addItem(pName, quantityVar);
         System.out.println("Product Name : " + pName + " Quantity : " + quantityVar);
         this.quantityVar = 0;
        // quantityVar1 = 0;
@@ -82,15 +84,15 @@ public class AddCartBean implements Serializable {
     }
 
     /**
-     * Remove items from the shopping cart - quantities are taken from instance
+     * Remove items from the shopping shoppingCartBean - quantities are taken from instance
      * variables. Note: ShoppingCart SFSB takes care of too large values
      */
     public void removeFromBasket(String pName, int quantityVar) {
-       // cart.removeItem("PC", quantityPC);
-        //cart.removeItem("Monitor", quantityMonitor);
-       // cart.removeItem("Printer", quantityPrinter);
+       // shoppingCartBean.removeItem("PC", quantityPC);
+        //shoppingCartBean.removeItem("Monitor", quantityMonitor);
+       // shoppingCartBean.removeItem("Printer", quantityPrinter);
         
-        cart.removeItem(pName, quantityVar);
+        shoppingCartBean.removeItem(pName, quantityVar);
         
         // reset counter values
        // this.quantityVar = 0;
@@ -101,41 +103,41 @@ public class AddCartBean implements Serializable {
     
     public HashMap<String, Integer> getCartItems()
     {
-        return cart.getCartItems();
+        return shoppingCartBean.getCartItems();
     }
     /**
-     * Checkout shopping cart - only stores checked out items in instance
-     * variable and removes releases SFSB cart
+     * Checkout shopping shoppingCartBean - only stores checked out items in instance
+     * variable and removes releases SFSB shoppingCartBean
      *
      * @return Value "checkout" for auto navigation
      */
     public String checkout()
     {   
-     
-        order = cart.getItemList().replace("<br>", "");
-        cart.checkout();
+        shoppingCartBean.checkout();
+        order = shoppingCartBean.getItemList().replace("<br>", "");
+        shoppingCartBean.clearItems();
         return "checkout";
       
     }
 
     /**
-     * Cancels the order. Only releases SFSB cart
+     * Cancels the order. Only releases SFSB shoppingCartBean
      *
      * @return Value "cancel" for auto navigation
      */
     public String cancel() {
-        cart.cancel();
+        shoppingCartBean.cancel();
         return "cancel";
     }
 
     /**
      * Returns a list of items and their quantities that are currently in
-     * shopping cart
+     * shopping shoppingCartBean
      *
-     * @return Items/quantities in shopping cart
+     * @return Items/quantities in shopping shoppingCartBean
      */
     public String getItemList() {
-        String content = cart.getItemList();
+        String content = shoppingCartBean.getItemList();
         return content.replace("<br>", "");
     }
 
@@ -146,7 +148,7 @@ public class AddCartBean implements Serializable {
      */
     public String index() {
         // invalidate session to remove reference 
-        // to shopping cart - you want a new one next time to make
+        // to shopping shoppingCartBean - you want a new one next time to make
         // sure to receive a new SFSB
         FacesContext.getCurrentInstance().getExternalContext().
                 invalidateSession();
@@ -208,4 +210,12 @@ public class AddCartBean implements Serializable {
     public String getOrder() {
         return order;
     }
+    /**
+     * Starts the check out functionality
+     */
+    public void runCheckOut()
+    {
+        shoppingCartBean.runCheckOut();
+    }
+    
 }

@@ -109,9 +109,9 @@ public class userBean implements Serializable {
     public void initialize()
     {
       int id;
-      id = newUserBean.createUser("joe","1D10T?","Castletroy, Limerick","customer","Hello I am a cutomer here !");
+      id = newUserBean.createUser("joe","1D10T?","Castletroy, Limerick","customer","Hello I am a customer!");
       System.out.println("ID : "+id);
-      id = newUserBean.createUser("toor","4uIdoO!","Limerick City","admin","Hi I am Admin"); 
+      id = newUserBean.createUser("toor","4uIdo0!","Limerick City","admin","Hi I am an Admin!"); 
       System.out.println("ID : "+id);
     }
     

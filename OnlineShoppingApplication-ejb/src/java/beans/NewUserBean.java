@@ -70,10 +70,8 @@ public class NewUserBean implements NewUserBeanLocal {
         // return query result
         if((long)query.getSingleResult() > 0)
         {
-            System.out.println("User is exists");
-         return true;
+            return true;
         }
-        System.out.println("User Not exists");
         return false;
     }
     

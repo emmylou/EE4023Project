@@ -26,9 +26,8 @@ public interface ShoppingCartBeanLocal
     /**
      * Proceed with the checkout by asking for billing information. Checkout 
      * will terminate the current session for the EJB.
-     * @return Message indicating result of checkout.
      */
-    public String checkout();
+    public void checkout();
     /**
      * Cancels the current ordering process. Cancel will terminate the current 
      * session for the EJB.
@@ -46,5 +45,46 @@ public interface ShoppingCartBeanLocal
      * @return 
      */
     public HashMap<String, Integer> getCartItems();
+    
+    /**
+     * runs the checkout functionality
+     */
+    public void runCheckOut();
+    
+    /**
+     * Writes to log output
+     * @param user customer name/ administrator name
+     * @param status status of order/ product
+     */
+    public void writeToLogFile(String user, String status);
+    
+    /**
+     * returns a boolean if the order is valid or not
+     * @return 
+     */
+    public boolean checkIfValidOrder();
+    
+    /**
+     * updates the Database with the new order
+     */
+    public void updateDB();
+    
+    /**
+     * creates a new Purchase order entry
+     */
+    public void createPOEntry();
+    
+    /**
+     * decrements the product table
+     * @param title - name of product
+     * @param amount - quantity of product
+     * @return returns whether decrement was successful
+     */
+    public boolean decrement(String title, String amount);
+    
+    /**
+     * method to clear items
+     */
+    public void clearItems();
     
 }
