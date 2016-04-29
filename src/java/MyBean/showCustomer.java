@@ -3,14 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package myManagedBean;
+package MyBean;
 
-
-import Ent.Customer;
+import Entities.Customer;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -26,14 +22,16 @@ import javax.persistence.Query;
 @RequestScoped
 public class showCustomer {
 
-    @PersistenceContext(unitName = "OnlineShoppingApplication-warPU")
+    @PersistenceContext(unitName = "OnlineShoppingApplicationPU")
     private EntityManager em;
-    @Resource
-    private javax.transaction.UserTransaction utx;
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
+
     
     
     private String custName;
-   
     private int custID;
 
     public String getCustName() {
@@ -76,17 +74,6 @@ public class showCustomer {
         Query query = em.createNamedQuery("Customer.findAll");
         // return query result
         return query.getResultList();
-    }
-
-    public void persist(Object object) {
-        try {
-            utx.begin();
-            em.persist(object);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
     }
     
 }

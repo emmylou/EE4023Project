@@ -6,6 +6,7 @@
 package beans;
 
 import Ent.G13USERS;
+import Ent.Product;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -70,9 +71,20 @@ public class NewUserBean implements NewUserBeanLocal {
         // return query result
         if((long)query.getSingleResult() > 0)
         {
-            return true;
+          //  System.out.println("User is exists");
+         return true;
         }
+       // System.out.println("User Not exists");
         return false;
+    }
+    
+    public long getUserID(String user,String pwd)
+    {
+        Query query = em.createNamedQuery("G13USERS.getUserID");
+        query.setParameter("username", user);
+        query.setParameter("password", pwd);
+        long id = (long)query.getSingleResult();
+        return id;
     }
     
     public boolean validate(String user,String pwd)
@@ -95,5 +107,62 @@ public class NewUserBean implements NewUserBeanLocal {
     
     public void persist(Object object) {
         em.persist(object);
+    }
+    
+    public List<G13USERS> getCurrentUserDetails(long id) {
+
+        // create named query and set parameter
+        Query query = em.createNamedQuery("G13USERS.findByUserId")
+                .setParameter("uid", id);
+        List<G13USERS> result = query.getResultList();
+        return result;
+    }
+    
+    public List<G13USERS> getCustomerListByName(String name)
+    {
+        // create named query and set parameter
+        Query query = em.createNamedQuery("G13USERS.findByCustomerName");
+        query.setParameter("username", name);
+        query.setParameter("usertype", "customer");
+        List<G13USERS> result = query.getResultList();
+        return result;
+    }
+    
+    public List<G13USERS> getCustomerListByID(long id)
+    {
+        // create named query and set parameter
+        Query query = em.createNamedQuery("G13USERS.findByCustomerId");
+        query.setParameter("uid", id);
+        query.setParameter("usertype", "customer");
+        List<G13USERS> result = query.getResultList();
+        return result;
+    }
+    
+    //id, username, address, message
+    @Override
+    public boolean update(long id, String username, String address, String message)
+    {
+        System.out.println("id : "+id+" username : "+username+" Address : "+address+" message : "+message);
+        Query q= em.createNamedQuery("G13USERS.findByUserId");
+        q.setParameter("uid", id);
+        List <G13USERS> isin=q.getResultList();
+        if(isin.isEmpty())
+        {
+            System.out.println("List is Empty");
+         return false;
+        }
+         else
+        {  
+            System.out.println("List is not Empty");
+            //int am=Integer.parseInt(amount);
+            //int currentAm=isin.get(0).getQuantityOnHand();
+            G13USERS u=isin.get(0);
+            u.setUsername(username);
+            u.setAddress(address);
+            u.setMessage(message);
+            em.persist(u);
+          
+          return true;
+        }
     }
 }

@@ -6,6 +6,7 @@
 package myManagedBean;
 
 import LoginPackage.SessionBean;
+import beans.ShoppingCartBeanLocal;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -25,6 +26,9 @@ import statics.post;
 @Named(value = "addCartBean")
 @SessionScoped
 public class AddCartBean implements Serializable {
+
+    @EJB
+    private ShoppingCartBeanLocal shoppingCartBean;
 
     @EJB
     ShoppingCartBeanLocal shoppingCartBean;
@@ -62,9 +66,6 @@ public class AddCartBean implements Serializable {
     //@EJB
     //ShoppingCartBeanLocal shoppingCartBean;
 
-    /**
-     * Creates a new instance of ShoppingBean
-     */
 
     /**
      * Adds new items to the shopping shoppingCartBean - quantities are taken from instance

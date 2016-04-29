@@ -25,10 +25,11 @@ import javax.persistence.Query;
  */
 @Stateful
 public class ShoppingCartBean implements ShoppingCartBeanLocal {
-    
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+
     private HashMap<String, Integer> items = new HashMap<>();
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
