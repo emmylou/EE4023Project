@@ -74,8 +74,8 @@ public class showProduct {
     
     //Method to get All product
     public List<Product> getAllProducts() {
-    List<Product> listProduct= productBean.getAllProducts();
-      return listProduct;
+        List<Product> listProduct= productBean.getAllProducts();
+        return listProduct;
     }
     
     public void persist(Object object) {

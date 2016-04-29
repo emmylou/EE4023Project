@@ -22,6 +22,11 @@ public class NewUserBean implements NewUserBeanLocal {
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
     private String userName;
+    //private long id;
+    
+    //public long getId() {
+        //return this.id;
+    //}
 
     /**
      * Adds a new customer to the database with given name and city. Note:
@@ -97,6 +102,7 @@ public class NewUserBean implements NewUserBeanLocal {
         query.setParameter("username", user);
         query.setParameter("password", pwd);
         long id = (long)query.getSingleResult();
+        //this.id = id;
         return id;
     }
     

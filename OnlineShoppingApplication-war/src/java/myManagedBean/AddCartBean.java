@@ -113,7 +113,7 @@ public class AddCartBean implements Serializable {
     {   
         shoppingCartBean.checkout();
         order = shoppingCartBean.getItemList().replace("<br>", "");
-        shoppingCartBean.clearItems();
+        //shoppingCartBean.clearItems();
         return "checkout";
       
     }

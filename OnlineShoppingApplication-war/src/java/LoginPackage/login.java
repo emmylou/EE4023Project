@@ -90,7 +90,7 @@ public class login implements Serializable {
 		boolean valid = newUserBean.validate(user, pwd);
 		if (valid) {
 			HttpSession session = SessionBean.getSession();
-                        newUserBean.setUserName(user);
+                        //newUserBean.setUserName(user);
                       if(user.equalsIgnoreCase("toor"))//if user logged in redirect to admin pane;
                       {   
                           post.generateToken();//generets a token 

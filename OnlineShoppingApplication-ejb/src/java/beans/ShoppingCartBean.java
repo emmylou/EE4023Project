@@ -27,10 +27,10 @@ import javax.persistence.Query;
 @Stateful
 public class ShoppingCartBean implements ShoppingCartBeanLocal {
 
+    private HashMap<String, Integer> items = new HashMap<>();
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
-    private HashMap<String, Integer> items = new HashMap<>();
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(ShoppingCartBean.class.getName());
     private String userName;
@@ -77,8 +77,9 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     //@Remove
     public void checkout() 
     {
-        NewUserBean nb = new NewUserBean();
-        this.userName = nb.getUserName();
+        System.out.println("ShoppingCartBean checkout()");
+        //NewUserBean nb = new NewUserBean();
+        //this.userName = nb.getUserName();
         runCheckOut();
         //items.clear();
     }
@@ -86,18 +87,18 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     @Override
     public void clearItems()
     {
-        items.clear();
+        //items.clear();
     }
 
     @Override
     //@Remove
-    public void cancel() {
+    public void cancel() 
+    {
         // no action required - annotation @Remove indicates
         // that calling this method should remove the EJB which will
         // automatically destroy instance variables
         // empty storage
-        writeToLogFile("Joe", "Cancelled");
-        clearItems();
+        writeToLogFile(this.userName, "Cancelled");
     }
 
     @Override
@@ -187,15 +188,25 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             decrement(pair.getKey().toString(), pair.getValue().toString());
+            //createPOEntry(pair.getKey().toString(), (int)pair.getValue());
             //it.remove();
         }
-        createPOEntry();
     }
     
     @Override
-    public void createPOEntry()
+    public void createPOEntry(String desc, int qty)
     {
-        //create a PO entry in the DB
+        //NewPurchaseOrderBean nb = new NewPurchaseOrderBean();
+        //NewUserBean nub = new NewUserBean();
+        Query q = em.createNamedQuery("Product.findByDescription");
+        q.setParameter("description", desc);
+        List <Product> isin = q.getResultList();
+        Product p = isin.get(0);
+        
+        //System.out.println("UserID: " + nub.getId() + "\tProductID: " + p.getProductId() + "\tQty: " + qty);
+        
+        //nb.createPurchaseOrder(nub.getId(), p.getProductId(), qty);
+        
     }
 
     public void persist(Object object) {

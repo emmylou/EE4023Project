@@ -72,7 +72,7 @@ public interface ShoppingCartBeanLocal
     /**
      * creates a new Purchase order entry
      */
-    public void createPOEntry();
+    public void createPOEntry(String desc, int qty);
     
     /**
      * decrements the product table

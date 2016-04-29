@@ -31,7 +31,6 @@ public class productBean implements productBeanLocal
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(productBean.class.getName());
-    private String uName;
     
     //Admin Add Product Functionality
     @Override
@@ -56,8 +55,8 @@ public class productBean implements productBeanLocal
         pr.setPurchaseCost(bigDecimalValue);
         pr.setAvailable("true");
         
-        NewUserBean nb = new NewUserBean();
-        this.uName = nb.getUserName();
+        //NewUserBean nb = new NewUserBean();
+        //this.uName = nb.getUserName();
         writeToLogFile("admin", "Added", title, amount);
         em.persist(pr); 
         
@@ -76,7 +75,7 @@ public class productBean implements productBeanLocal
         }
         else
         {  
-            writeToLogFile(this.uName, "Removed", title, "ALL");
+            writeToLogFile("admin", "Removed", title, "ALL");
             em.remove(isin.get(0));
             return true;
         }
