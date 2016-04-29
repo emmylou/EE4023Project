@@ -29,9 +29,6 @@ public class AddCartBean implements Serializable {
 
     @EJB
     private ShoppingCartBeanLocal shoppingCartBean;
-
-    @EJB
-    ShoppingCartBeanLocal shoppingCartBean;
     /**
      * Creates a new instance of AddCartBean
      */
