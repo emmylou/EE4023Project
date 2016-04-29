@@ -6,6 +6,7 @@
 package myManagedBean;
 
 import LoginPackage.SessionBean;
+import beans.ShoppingCartBeanLocal;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
-import beans.ShoppingCartLocal;
+import beans.ShoppingCartBeanLocal;
 import java.util.HashMap;
 import statics.post;
 
@@ -25,6 +26,9 @@ import statics.post;
 @Named(value = "addCartBean")
 @SessionScoped
 public class AddCartBean implements Serializable {
+
+    @EJB
+    private ShoppingCartBeanLocal shoppingCartBean;
 
     /**
      * Creates a new instance of AddCartBean
@@ -57,12 +61,7 @@ public class AddCartBean implements Serializable {
     private String order = "";
     // use dependency injection to connect to
     // stateful session bean ShoppingCartBean
-    @EJB
-    ShoppingCartLocal cart;
 
-    /**
-     * Creates a new instance of ShoppingBean
-     */
 
     /**
      * Adds new items to the shopping cart - quantities are taken from instance
@@ -73,7 +72,7 @@ public class AddCartBean implements Serializable {
        // cart.addItem("Monitor", quantityMonitor);
        // cart.addItem("Printer", quantityPrinter);
         
-        cart.addItem(pName, quantityVar);
+        shoppingCartBean.addItem(pName, quantityVar);
         System.out.println("Product Name : " + pName + " Quantity : " + quantityVar);
         this.quantityVar = 0;
        // quantityVar1 = 0;
@@ -90,7 +89,7 @@ public class AddCartBean implements Serializable {
         //cart.removeItem("Monitor", quantityMonitor);
        // cart.removeItem("Printer", quantityPrinter);
         
-        cart.removeItem(pName, quantityVar);
+        shoppingCartBean.removeItem(pName, quantityVar);
         
         // reset counter values
        // this.quantityVar = 0;
@@ -101,7 +100,7 @@ public class AddCartBean implements Serializable {
     
     public HashMap<String, Integer> getCartItems()
     {
-        return cart.getCartItems();
+        return shoppingCartBean.getCartItems();
     }
     /**
      * Checkout shopping cart - only stores checked out items in instance
@@ -112,8 +111,8 @@ public class AddCartBean implements Serializable {
     public String checkout()
     {   
      
-        order = cart.getItemList().replace("<br>", "");
-        cart.checkout();
+        order = shoppingCartBean.getItemList().replace("<br>", "");
+        shoppingCartBean.checkout();
         return "checkout";
       
     }
@@ -124,7 +123,7 @@ public class AddCartBean implements Serializable {
      * @return Value "cancel" for auto navigation
      */
     public String cancel() {
-        cart.cancel();
+        shoppingCartBean.cancel();
         return "cancel";
     }
 
@@ -135,7 +134,7 @@ public class AddCartBean implements Serializable {
      * @return Items/quantities in shopping cart
      */
     public String getItemList() {
-        String content = cart.getItemList();
+        String content = shoppingCartBean.getItemList();
         return content.replace("<br>", "");
     }
 

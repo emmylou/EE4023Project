@@ -16,10 +16,12 @@ import javax.ejb.Stateful;
  * @author ankit
  */
 @Stateful
-public class ShoppingCartBean implements ShoppingCartLocal {
+public class ShoppingCartBean implements ShoppingCartBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+
     private HashMap<String, Integer> items = new HashMap<>();
 
     public HashMap<String, Integer> getCartItems() {
