@@ -38,11 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class G13USERS implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-  /*/*  @Basic(optional = false)
-    @NotNull
-    @Column(name = "UID")
-    private Integer uid;//user ID */
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uid;
     

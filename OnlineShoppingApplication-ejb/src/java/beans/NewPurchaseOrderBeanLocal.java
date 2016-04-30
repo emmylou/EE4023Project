@@ -13,5 +13,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface NewPurchaseOrderBeanLocal {
-     public int createPurchaseOrder(long cID, int pID, int qty);
+     public void createPurchaseOrder(Long cID, int pID, int qty);
 }

@@ -5,8 +5,15 @@
  */
 package beans;
 
-import beans.NewUserBean;
+import Ent.Customer;
+import Ent.G13PO;
 import Ent.Product;
+import Ent.PurchaseOrder;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,14 +81,22 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     }
 
     @Override
-    //@Remove
-    public void checkout() 
+    public String checkout() 
     {
-        System.out.println("ShoppingCartBean checkout()");
-        //NewUserBean nb = new NewUserBean();
-        //this.userName = nb.getUserName();
-        runCheckOut();
-        //items.clear();
+        NewUserBean nb = new NewUserBean();
+        this.userName = nb.getUserName();
+        
+        if(runCheckOut())
+        {
+            String message = getItemList();
+            //items.clear();
+            return message;
+        }
+        else
+        {
+            //items.clear();
+            return getItemList();
+        }
     }
     
     @Override
@@ -91,7 +106,6 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     }
 
     @Override
-    //@Remove
     public void cancel() 
     {
         // no action required - annotation @Remove indicates
@@ -99,6 +113,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         // automatically destroy instance variables
         // empty storage
         writeToLogFile(this.userName, "Cancelled");
+        //items.clear();
     }
 
     @Override
@@ -113,7 +128,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             String k;
             while (it.hasNext()) {
                 k = it.next();
-                message += k + ", quantity: " + items.get(k) + "; \n<br>";
+                message += "Product: " + k + ", Quantity: " + items.get(k);
             }
             return message;
         }
@@ -122,7 +137,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     }
     
     @Override
-    public void runCheckOut()
+    public boolean runCheckOut()
     {
         //Logging logFile;
         if(checkIfValidOrder())
@@ -131,11 +146,11 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             updateDB();
             
             writeToLogFile(this.userName, "Confirmed");
+            return true;
         }
         else
         {
-            //display error to customer that order was not successful
-            clearItems();
+            return false;
         }
     }
     
@@ -189,23 +204,21 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             decrement(pair.getKey().toString(), pair.getValue().toString());
             //createPOEntry(pair.getKey().toString(), (int)pair.getValue());
-            //it.remove();
         }
     }
     
     @Override
     public void createPOEntry(String desc, int qty)
     {
-        //NewPurchaseOrderBean nb = new NewPurchaseOrderBean();
-        //NewUserBean nub = new NewUserBean();
+        NewUserBean nub = new NewUserBean();
         Query q = em.createNamedQuery("Product.findByDescription");
         q.setParameter("description", desc);
         List <Product> isin = q.getResultList();
         Product p = isin.get(0);
-        
-        //System.out.println("UserID: " + nub.getId() + "\tProductID: " + p.getProductId() + "\tQty: " + qty);
-        
-        //nb.createPurchaseOrder(nub.getId(), p.getProductId(), qty);
+        long temp = 101;
+        int pid = p.getProductId();
+        em.persist(p);       
+        createPurchaseOrder(temp, pid, qty);
         
     }
 
@@ -241,5 +254,31 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             }
             return true;
         }
+    }
+    
+    @Override
+    public void createPurchaseOrder(long cID, int pID, int qty) 
+    {
+        Query q = em.createNamedQuery("G13PO.getHighestPurchaseId");
+        int id = 0;
+        if(q.getSingleResult() == null)
+        {
+            id = 1;
+        }
+        else
+        {
+           id = (int) q.getSingleResult()+1;
+        }
+        
+        G13PO po=new G13PO();
+
+        po.setPurchaseOrderId(id);
+        po.setUserID(cID);
+        po.setCompany("Fedex");
+        po.setOrderDate("2016-04-30");
+        po.setProductid(pID);
+        po.setQuantity(qty);
+
+        em.persist(po); 
     }
 }
