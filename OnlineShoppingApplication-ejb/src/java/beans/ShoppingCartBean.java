@@ -89,12 +89,12 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         if(runCheckOut())
         {
             String message = getItemList();
-            //items.clear();
+            items.clear();
             return message;
         }
         else
         {
-            //items.clear();
+            items.clear();
             return getItemList();
         }
     }
@@ -113,7 +113,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         // automatically destroy instance variables
         // empty storage
         writeToLogFile(this.userName, "Cancelled");
-        //items.clear();
+        items.clear();
     }
 
     @Override
