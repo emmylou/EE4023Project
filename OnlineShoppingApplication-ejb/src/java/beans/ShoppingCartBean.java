@@ -6,13 +6,9 @@
 package beans;
 
 import Ent.Customer;
-import Ent.G13PO;
 import Ent.Product;
 import Ent.PurchaseOrder;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +53,10 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         // adjust quantity and put back to cart
         orderQuantity += quantity;
         items.put(id, orderQuantity);
+        
+        LOGGER.info("Logger Name:" + LOGGER.getName());
+        String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Added into the cart");
+        LOGGER.info(temp);
     }
 
     @Override
@@ -71,14 +71,19 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         if (orderQuantity <= 0) {
             // final quantity less equal 0 - remove from cart
             items.remove(id);
+            LOGGER.info("Logger Name:" + LOGGER.getName());
+            String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Remove Item From Cart");
+            LOGGER.info(temp);
         } 
         else 
         {
             // final quantity > 0 - adjust quantity
             items.put(id, orderQuantity);
-        }
+            LOGGER.info("Logger Name:" + LOGGER.getName());
+            String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Remove from cart");
+            LOGGER.info(temp); }
         
-    }
+         }
 
     @Override
     public String checkout() 
@@ -203,7 +208,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             decrement(pair.getKey().toString(), pair.getValue().toString());
-            //createPOEntry(pair.getKey().toString(), (int)pair.getValue());
+            createPOEntry(pair.getKey().toString(), (int)pair.getValue());
         }
     }
     
@@ -259,26 +264,40 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     @Override
     public void createPurchaseOrder(long cID, int pID, int qty) 
     {
-        Query q = em.createNamedQuery("G13PO.getHighestPurchaseId");
-        int id = 0;
-        if(q.getSingleResult() == null)
+         try
         {
-            id = 1;
-        }
-        else
-        {
-           id = (int) q.getSingleResult()+1;
-        }
+         Query q= em.createNamedQuery("PurchaseOrder.getHighestPurchaseOrderID");
+        int id=(int) q.getSingleResult()+1;
         
-        G13PO po=new G13PO();
-
-        po.setPurchaseOrderId(id);
-        po.setUserID(cID);
-        po.setCompany("Fedex");
-        po.setOrderDate("2016-04-30");
-        po.setProductid(pID);
-        po.setQuantity(qty);
-
-        em.persist(po); 
+        short value = qty > Short.MAX_VALUE ? Short.MAX_VALUE : qty < Short.MIN_VALUE ? Short.MIN_VALUE : (short)qty;
+        
+        PurchaseOrder pr=new PurchaseOrder();
+        //
+        Product p=new Product(pID);
+        
+        Customer c = new Customer(25);
+        
+        Date dt = new Date();
+        
+        BigDecimal bValue = new BigDecimal(200);
+        
+        pr.setCustomerId(c);
+        pr.setFreightCompany("Fedex");
+        pr.setOrderNum((Integer)id);
+        pr.setProductId(p);
+        pr.setQuantity(value);
+        pr.setSalesDate(dt);
+        pr.setShippingDate(dt);
+        pr.setShippingCost(bValue);
+        
+        em.persist(pr);     
+        
+        System.out.println("purchase order added");
+        }
+        catch(Exception ex)
+        {
+         System.out.println(ex.toString());
+         System.out.println("purchase order not added");
+        }
     }
 }

@@ -40,6 +40,7 @@ public class NewUserBean implements NewUserBeanLocal {
      * @param message State for new customer
      * @return ID of newly created customer
      */
+    @Override
     public int createUser(String username,String password,String address,String usertype,String message)
     {
       //  int id = (Integer) em.createNamedQuery("G13USERS.getHighestUserID").getSingleResult();
@@ -83,6 +84,7 @@ public class NewUserBean implements NewUserBeanLocal {
      * 
      * @return All customer with name customerName
      */
+    @Override
     public boolean isCustomerExist() {
         // create named query and set parameter
         Query query = em.createNamedQuery("G13USERS.isUserExists").setParameter("username", "joe");
@@ -96,6 +98,13 @@ public class NewUserBean implements NewUserBeanLocal {
         return false;
     }
     
+    /**
+     *
+     * @param user
+     * @param pwd
+     * @return
+     */
+    @Override
     public long getUserID(String user,String pwd)
     {
         Query query = em.createNamedQuery("G13USERS.getUserID");
@@ -106,6 +115,13 @@ public class NewUserBean implements NewUserBeanLocal {
         return id;
     }
     
+    /**
+     *
+     * @param user
+     * @param pwd
+     * @return
+     */
+    @Override
     public boolean validate(String user,String pwd)
     {
         // create named query and set parameter
@@ -128,6 +144,12 @@ public class NewUserBean implements NewUserBeanLocal {
         em.persist(object);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Override
     public List<G13USERS> getCurrentUserDetails(long id) {
 
         // create named query and set parameter
@@ -137,6 +159,12 @@ public class NewUserBean implements NewUserBeanLocal {
         return result;
     }
     
+    /**
+     *
+     * @param name
+     * @return
+     */
+    @Override
     public List<G13USERS> getCustomerListByName(String name)
     {
         // create named query and set parameter
@@ -147,6 +175,12 @@ public class NewUserBean implements NewUserBeanLocal {
         return result;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Override
     public List<G13USERS> getCustomerListByID(long id)
     {
         // create named query and set parameter
@@ -157,8 +191,32 @@ public class NewUserBean implements NewUserBeanLocal {
         return result;
     }
     
-    //id, username, address, message
+    /**
+     *
+     * @return
+     */
     @Override
+    public List<G13USERS> getAllCustomer()
+    {
+        // create named query and set parameter
+        Query query = em.createNamedQuery("G13USERS.findAllCustomer");
+        query.setParameter("usertype", "customer");
+        List<G13USERS> result = query.getResultList();
+        return result;
+    }
+    
+    
+    //id, username, address, message
+
+    /**
+     *
+     * @param id
+     * @param username
+     * @param address
+     * @param message
+     * @return
+     */
+        @Override
     public boolean update(long id, String username, String address, String message)
     {
         System.out.println("id : "+id+" username : "+username+" Address : "+address+" message : "+message);

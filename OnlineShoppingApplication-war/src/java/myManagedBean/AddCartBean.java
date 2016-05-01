@@ -74,7 +74,7 @@ public class AddCartBean implements Serializable {
        // shoppingCartBean.addItem("Printer", quantityPrinter);
         
         shoppingCartBean.addItem(pName, quantityVar);
-        System.out.println("Product Name : " + pName + " Quantity : " + quantityVar);
+    //    System.out.println("Product Name : " + pName + " Quantity : " + quantityVar);
         this.quantityVar = 0;
        // quantityVar1 = 0;
         // reset counter values
@@ -91,7 +91,7 @@ public class AddCartBean implements Serializable {
        // shoppingCartBean.removeItem("Printer", quantityPrinter);
         
         shoppingCartBean.removeItem(pName, quantityVar);
-        
+        this.quantityVar1 = 0;
         // reset counter values
        // this.quantityVar = 0;
        // this.quantityVar1 = 0;

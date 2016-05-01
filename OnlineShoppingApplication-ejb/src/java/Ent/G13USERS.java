@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "G13USERS.loginValidate", query = "SELECT COUNT(u) FROM G13USERS u WHERE u.username = :username AND u.password = :password"),
     @NamedQuery(name = "G13USERS.getUserID", query = "SELECT u.uid FROM G13USERS u WHERE u.username = :username AND u.password = :password"),
     @NamedQuery(name = "G13USERS.findByUserId", query = "SELECT u FROM G13USERS u WHERE u.uid = :uid"),
+    @NamedQuery(name = "G13USERS.findAllCustomer", query = "SELECT u FROM G13USERS u WHERE u.usertype = :usertype"), 
     @NamedQuery(name = "G13USERS.findByCustomerId", query = "SELECT u FROM G13USERS u WHERE u.uid = :uid AND u.usertype = :usertype"),
     @NamedQuery(name = "G13USERS.findByCustomerName", query = "SELECT u FROM G13USERS u WHERE u.username = :username AND u.usertype = :usertype"),
     @NamedQuery(name = "G13USERS.isUserExists", query = "SELECT COUNT(u) FROM G13USERS u WHERE u.username = :username")})

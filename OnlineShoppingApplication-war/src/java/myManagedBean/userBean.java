@@ -109,12 +109,13 @@ public class userBean implements Serializable {
      {
        int id;
        id = newUserBean.createUser("joe","1D10T?","Castletroy, Limerick","customer","Hello, My name is Joe");
-       id = newUserBean.createUser("ankit","1D10T?","Castletroy, Limerick","customer","Hello, My name is Ankit");
+       id = newUserBean.createUser("ankit","ankit","Castletroy, Limerick","customer","Hello, My name is Ankit");
        id = newUserBean.createUser("josh","1D10T?","Castletroy, Limerick","customer","Hello, My name is Josh");
        id = newUserBean.createUser("emmylou","1D10T?","Castletroy, Limerick","customer","Hello, My name is Emmylou");
        id = newUserBean.createUser("vishrut","1D10T?","Castletroy, Limerick","customer","Hello, My name is Vishrut");
        //System.out.println("ID : "+id);
-       id = newUserBean.createUser("toor","4uIdo0!","Limerick City","admin","Hello, My name is Toor and I'm admin here."); 
+       id = newUserBean.createUser("toor","4uIdo0!","Limerick City","admin","Hello, My name is Toor and I'm admin here.");
+       id = newUserBean.createUser("Anky","anky","Limerick City","admin","Hello, My name is Anky and I'm admin here.");
        //System.out.println("ID : "+id);
      }
      
@@ -149,6 +150,13 @@ public class userBean implements Serializable {
      List<G13USERS> uList = newUserBean.getCustomerListByID(id);
       return uList;
     }
+   
+    public List<G13USERS> getAllCustomerList()
+    {
+     List<G13USERS> uList = newUserBean.getAllCustomer();
+      return uList;
+    }
+   
     
    // public void setCurrentUserID(String username, String password)
    // {
