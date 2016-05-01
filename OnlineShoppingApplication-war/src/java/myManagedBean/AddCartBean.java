@@ -37,48 +37,41 @@ public class AddCartBean implements Serializable {
     
     private int quantityVar = 0;
     private int quantityVar1 = 0;
-    //private int quantityPC = 0;
-    //private int quantityPrinter = 0;
-    //private int quantityMonitor = 0;
-
+   
+    //getter for quantityVar1
     public int getQuantityVar1() {
         return quantityVar1;
     }
 
+    //setter for quantityVar1
     public void setQuantityVar1(int quantityVar1) {
         this.quantityVar1 = quantityVar1;
     }
 
+    //getter for quantityVar
     public int getQuantityVar() {
         return quantityVar;
     }
 
+    //setter for quantityVar
     public void setQuantityVar(int quantityVar) {
         this.quantityVar = quantityVar;
     }
 
+    //sring order to add oreder item
     private String order = "";
-    // use dependency injection to connect to
-    // stateful session bean ShoppingCartBean
-    //@EJB
-    //ShoppingCartBeanLocal shoppingCartBean;
-
 
     /**
      * Adds new items to the shopping shoppingCartBean - quantities are taken from instance
      * variables
      */
     public void addToBasket(String pName, int quantityVar) {
-       // shoppingCartBean.addItem("PC", quantityPC);
-       // shoppingCartBean.addItem("Monitor", quantityMonitor);
-       // shoppingCartBean.addItem("Printer", quantityPrinter);
-        
-        shoppingCartBean.addItem(pName, quantityVar);
-    //    System.out.println("Product Name : " + pName + " Quantity : " + quantityVar);
+       
+        //ejb beann to add item
+        shoppingCartBean.addItem(pName, quantityVar);  
+       
+        //reset the counter 
         this.quantityVar = 0;
-       // quantityVar1 = 0;
-        // reset counter values
-        //quantityPC = quantityMonitor = quantityPrinter = 0;
     }
 
     /**
@@ -86,19 +79,15 @@ public class AddCartBean implements Serializable {
      * variables. Note: ShoppingCart SFSB takes care of too large values
      */
     public void removeFromBasket(String pName, int quantityVar) {
-       // shoppingCartBean.removeItem("PC", quantityPC);
-        //shoppingCartBean.removeItem("Monitor", quantityMonitor);
-       // shoppingCartBean.removeItem("Printer", quantityPrinter);
-        
+       
+        //ejb beann to add item 
         shoppingCartBean.removeItem(pName, quantityVar);
+        
+        //reset the counter
         this.quantityVar1 = 0;
-        // reset counter values
-       // this.quantityVar = 0;
-       // this.quantityVar1 = 0;
-        //quantityVar = 0;
-        //quantityPC = quantityMonitor = quantityPrinter = 0;
     }
-    
+   
+    //hash map list to get cart item 
     public HashMap<String, Integer> getCartItems()
     {
         return shoppingCartBean.getCartItems();
@@ -111,8 +100,9 @@ public class AddCartBean implements Serializable {
      */
     public String checkout()
     {   
+        //calling ejb bean checkout and add cart item into order string
         order = shoppingCartBean.checkout();
-        //order = shoppingCartBean.getItemList().replace("<br>", "");
+        //calling back checkout page
         return "checkout";
       
     }
@@ -152,53 +142,6 @@ public class AddCartBean implements Serializable {
         return "admin";
     }
 
-    /**
-     * Getter for quantityPC
-     * @return quantityPC
-     */
-//    public int getQuantityPC() {
-//        return quantityPC;
-//    }
-
-    /**
-     * Setter for quantityPC
-     * @param quantityPC new value for quantityPC
-     */
-//    public void setQuantityPC(int quantityPC) {
-//        this.quantityPC = quantityPC;
-//    }
-
-    /**
-     * Getter for quantityPrinter
-     * @return quantityPrinter
-     */
-//    public int getQuantityPrinter() {
-//        return quantityPrinter;
-//    }
-
-    /**
-     * Setter for quantityPrinter
-     * @param quantityPrinter new value for quantityPrinter
-     */
-//    public void setQuantityPrinter(int quantityPrinter) {
-//        this.quantityPrinter = quantityPrinter;
- //   }
-
-    /**
-     * Getter for quantityMonitor
-     * @return quantityMonitor
-     */
-//    public int getQuantityMonitor() {
-//        return quantityMonitor;
-//    }
-
-    /**
-     * Setter for quantityMonitor
-     * @param quantityMonitor  new value for quantityMonitor
-     */
-//    public void setQuantityMonitor(int quantityMonitor) {
-//        this.quantityMonitor = quantityMonitor;
-//    }
 
     /**
      * Getter for order

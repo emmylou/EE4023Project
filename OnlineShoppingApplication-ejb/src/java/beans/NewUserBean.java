@@ -21,17 +21,19 @@ import javax.persistence.Query;
 public class NewUserBean implements NewUserBeanLocal {
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
+    //User name 
     private String userName;
+    //user ID
     private long id;
     
+    //Getter for id
     public long getId() {
         return this.id;
     }
 
     /**
-     * Adds a new customer to the database with given name and city. Note:
-     * Required foreign keys DiscountCode and MicroMarket for the table Customer
-     * are fixed in this example.
+     * Adds a new customer to the database with given name,
+     * password, address, usertype, message
      *
      * @param username New name for new customer
      * @param password City for new customer
@@ -43,19 +45,12 @@ public class NewUserBean implements NewUserBeanLocal {
     @Override
     public int createUser(String username,String password,String address,String usertype,String message)
     {
-      //  int id = (Integer) em.createNamedQuery("G13USERS.getHighestUserID").getSingleResult();
-        // id is current highest, increment to next id
-      //  id++;
-        // create customer object
-      //  G13USERS u = new G13USERS(id);
-
+        //user table object
         G13USERS u = new G13USERS();
-        // ensure all constraints are fulfilled before making object persistent
-        // make new customer persistent
-        // this creates a new entry in the DB at the end of the current
-        // transaction
+     
+        //making it persistence to autogenerate id before adding details
         persist(u);
-        // set city and name and state
+        // setting username, password, address, usertype, message
         u.setUsername(username);
         u.setPassword(password);
         u.setAddress(address);
@@ -64,15 +59,16 @@ public class NewUserBean implements NewUserBeanLocal {
 
         // return id of new customer
         return 1;
-
     }
     
+    //setting username
     @Override
     public void setUserName(String username)
     {
         this.userName = username;
     }
     
+    //getting username
     @Override
     public String getUserName()
     {
@@ -98,7 +94,7 @@ public class NewUserBean implements NewUserBeanLocal {
         return false;
     }
     
-    /**
+    /**getting userID by passing username and password
      *
      * @param user
      * @param pwd
@@ -107,10 +103,13 @@ public class NewUserBean implements NewUserBeanLocal {
     @Override
     public long getUserID(String user,String pwd)
     {
+        //create Query
         Query query = em.createNamedQuery("G13USERS.getUserID");
         query.setParameter("username", user);
         query.setParameter("password", pwd);
+        //Execute Query
         long id = (long)query.getSingleResult();
+        //setting current id 
         this.id = id;
         return id;
     }
@@ -128,7 +127,6 @@ public class NewUserBean implements NewUserBeanLocal {
         Query query = em.createNamedQuery("G13USERS.loginValidate");
         query.setParameter("username", user);
         query.setParameter("password", pwd);
-        //query.setParameter("usertype", userType);
         
         // return query result
         if((long)query.getSingleResult() > 0)
@@ -144,7 +142,7 @@ public class NewUserBean implements NewUserBeanLocal {
         em.persist(object);
     }
     
-    /**
+    /** getting user details by passing id
      *
      * @param id
      * @return
@@ -155,11 +153,12 @@ public class NewUserBean implements NewUserBeanLocal {
         // create named query and set parameter
         Query query = em.createNamedQuery("G13USERS.findByUserId")
                 .setParameter("uid", id);
+        //Query execute
         List<G13USERS> result = query.getResultList();
         return result;
     }
     
-    /**
+    /** getting customer list by name
      *
      * @param name
      * @return
@@ -171,6 +170,7 @@ public class NewUserBean implements NewUserBeanLocal {
         Query query = em.createNamedQuery("G13USERS.findByCustomerName");
         query.setParameter("username", name);
         query.setParameter("usertype", "customer");
+        //Execute query
         List<G13USERS> result = query.getResultList();
         return result;
     }
@@ -187,6 +187,7 @@ public class NewUserBean implements NewUserBeanLocal {
         Query query = em.createNamedQuery("G13USERS.findByCustomerId");
         query.setParameter("uid", id);
         query.setParameter("usertype", "customer");
+        //execute query
         List<G13USERS> result = query.getResultList();
         return result;
     }
@@ -201,6 +202,7 @@ public class NewUserBean implements NewUserBeanLocal {
         // create named query and set parameter
         Query query = em.createNamedQuery("G13USERS.findAllCustomer");
         query.setParameter("usertype", "customer");
+        //execute query
         List<G13USERS> result = query.getResultList();
         return result;
     }
@@ -219,20 +221,24 @@ public class NewUserBean implements NewUserBeanLocal {
         @Override
     public boolean update(long id, String username, String address, String message)
     {
-        System.out.println("id : "+id+" username : "+username+" Address : "+address+" message : "+message);
+        //System.out.println("id : "+id+" username : "+username+" Address : "+address+" message : "+message);
+        //create named query and set parameter
         Query q= em.createNamedQuery("G13USERS.findByUserId");
         q.setParameter("uid", id);
+        //execute query
         List <G13USERS> isin=q.getResultList();
+        //checking if user in the list
         if(isin.isEmpty())
         {
-            System.out.println("List is Empty");
+           // System.out.println("List is Empty");
          return false;
         }
          else
         {  
-            System.out.println("List is not Empty");
+            //System.out.println("List is not Empty");
             //int am=Integer.parseInt(amount);
             //int currentAm=isin.get(0).getQuantityOnHand();
+            //Setting user details
             G13USERS u=isin.get(0);
             u.setUsername(username);
             u.setAddress(address);

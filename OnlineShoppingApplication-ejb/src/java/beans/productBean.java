@@ -15,7 +15,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -27,6 +32,11 @@ import javax.persistence.Query;
 @Stateless
 public class productBean implements productBeanLocal
 {
+    @Resource(mappedName = "jms/dest")
+    private Queue dest;
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
 
     @PersistenceContext(unitName = "OnlineShoppingApplication-ejbPU")
     private EntityManager em;
@@ -149,8 +159,19 @@ public class productBean implements productBeanLocal
     {
         //LOGGER.info("Logger Name:" + LOGGER.getName());
         String value = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", "User", "|Product", "|Quantity", "|Status");
+        //message driven bean
+        //logging
+        sendJMSMessageToDest(value);
+        
+        //command line server log file
         LOGGER.info(value);
+        
         String temp = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", user, "|" + productName, "|" + quantity, "|" + status);
+        //message driven bean
+        //logging
+        sendJMSMessageToDest(temp);
+        
+        //command line server log file
         LOGGER.info(temp);
     }
     
@@ -183,6 +204,10 @@ public class productBean implements productBeanLocal
         Query query = em.createNamedQuery("Product.findAll");
         // return query result
         return query.getResultList();
+    }
+
+    private void sendJMSMessageToDest(String messageData) {
+        context.createProducer().send(dest, messageData);
     }
 
 }

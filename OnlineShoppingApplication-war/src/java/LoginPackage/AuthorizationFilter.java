@@ -25,12 +25,17 @@ public class AuthorizationFilter implements Filter
 {
      public AuthorizationFilter() {
 	}
-
+        //override intialising method 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 
 	}
 
+        //filteration in jsf page
+        //if user is not logged-in it won't allow to open any page
+        //if logged in as customer it will take you to the customer functionality
+        //if logged as admin, it will take u to the admin page
+        //if cutomer trying to open admin page it will give an error message 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {

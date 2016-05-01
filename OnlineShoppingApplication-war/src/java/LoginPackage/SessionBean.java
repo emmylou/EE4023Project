@@ -14,18 +14,21 @@ import javax.servlet.http.HttpSession;
  */
 public class SessionBean 
 {
+        //give the current session 
         public static HttpSession getSession() 
         {
 		return (HttpSession) FacesContext.getCurrentInstance()
 				.getExternalContext().getSession(false);
 	}
 
+        //give the current request 
 	public static HttpServletRequest getRequest() 
         {
 		return (HttpServletRequest) FacesContext.getCurrentInstance()
 				.getExternalContext().getRequest();
 	}
 
+        //give the current user name
 	public static String getUserName() 
         {
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
@@ -33,6 +36,7 @@ public class SessionBean
 		return session.getAttribute("username").toString();
 	}
 
+        //give the current userid
 	public static String getUserId() 
         {
 		HttpSession session = getSession();
@@ -42,6 +46,7 @@ public class SessionBean
 			return null;
 	}   
         
+        //give the token detail
         public static String getToken()
         {
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
@@ -49,6 +54,7 @@ public class SessionBean
 		return session.getAttribute("token").toString();
 	}
         
+        //give the user type- customer/admin
         public static String getUserType()
         {
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()

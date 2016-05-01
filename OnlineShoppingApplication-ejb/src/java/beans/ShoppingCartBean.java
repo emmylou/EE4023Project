@@ -18,7 +18,12 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -29,6 +34,11 @@ import javax.persistence.Query;
  */
 @Stateful
 public class ShoppingCartBean implements ShoppingCartBeanLocal {
+    @Resource(mappedName = "jms/dest")
+    private Queue dest;
+    @Inject
+    @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
+    private JMSContext context;
 
     private HashMap<String, Integer> items = new HashMap<>();
     // Add business logic below. (Right-click in editor and choose
@@ -56,6 +66,12 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         
         LOGGER.info("Logger Name:" + LOGGER.getName());
         String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Added into the cart");
+        
+        //message driven bean
+        //logging
+        sendJMSMessageToDest(temp);
+        
+        //command line server log file
         LOGGER.info(temp);
     }
 
@@ -73,6 +89,12 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             items.remove(id);
             LOGGER.info("Logger Name:" + LOGGER.getName());
             String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Remove Item From Cart");
+            
+            //message driven bean
+            //logging
+            sendJMSMessageToDest(temp);
+
+            //command line server log file
             LOGGER.info(temp);
         } 
         else 
@@ -81,6 +103,12 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             items.put(id, orderQuantity);
             LOGGER.info("Logger Name:" + LOGGER.getName());
             String temp = String.format("%1$-20s %2$-20s %3$-20s", id, quantity, "Remove from cart");
+            
+            //message driven bean
+            //logging
+            sendJMSMessageToDest(temp);
+        
+            //command line server log file
             LOGGER.info(temp); }
         
          }
@@ -164,12 +192,24 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
     {
         LOGGER.info("Logger Name:" + LOGGER.getName());
         String value = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", "User", "|Product", "|Quantity", "|Status");
+        //message driven bean
+        //logging
+        sendJMSMessageToDest(value);
+        
+        //command line server log file
         LOGGER.info(value);
+        
         Iterator it = items.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             //LOGGER.log(Level.INFO, "Order: ","\nUser: " + "\tProduct: " + pair.getKey() + "\tQuantity: " + pair.getValue() + "\tStatus: ");
             String temp = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", user, "|" + pair.getKey(), "|" + pair.getValue(), "|" + status);
+      
+            //message driven bean
+            //logging
+            sendJMSMessageToDest(temp);
+        
+            //command line server log file
             LOGGER.info(temp);
         }
     }
@@ -299,5 +339,9 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
          System.out.println(ex.toString());
          System.out.println("purchase order not added");
         }
+    }
+
+    private void sendJMSMessageToDest(String messageData) {
+        context.createProducer().send(dest, messageData);
     }
 }

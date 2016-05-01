@@ -32,30 +32,36 @@ import javax.transaction.UserTransaction;
 @RequestScoped
 public class showProduct {
    
-    
+    //persistence for showing product
     @PersistenceContext(unitName = "OnlineShoppingApplication-warPU")
     private EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
     
+    //attributes
     private String productName;
     private int productId;
     
+    //object of ejb product bean
     @EJB
     private productBeanLocal productBean;
     
+    //getter for product name
     public String getProductName() {
         return productName;
     }
 
+    //setter for product name
     public void setProductName(String productName) {
         this.productName = productName;
     }
 
+    //getter for product id
     public int getProductId() {
         return productId;
     }
 
+    //setter for product id
     public void setProductId(int productId) {
         this.productId = productId;
     }

@@ -8,6 +8,7 @@
     </h:head>
     <h:body>
         <h:form>
+            Click here to Initialize users once : &nbsp;
             <h:commandButton action ="#{userBean.initialize()}" value="UserInit" disabled="#{userBean.isUserExist()}"/>
         </h:form><br />
         <h:form>

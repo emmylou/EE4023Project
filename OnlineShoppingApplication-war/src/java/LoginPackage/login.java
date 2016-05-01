@@ -25,6 +25,7 @@ import statics.post;
 @SessionScoped
 public class login implements Serializable {
     
+    //making ejb newuserbean object
     @EJB
     private NewUserBeanLocal newUserBean;
 
@@ -36,48 +37,59 @@ public class login implements Serializable {
         {
         }
     
-        private String pwd;
-	private String msg;
-	private String user;
-        private String userType;
-        private String token;
+        //required attributes
+        private String pwd;//passwword
+	private String msg;//message
+	private String user;//user
+        private String userType;//usertype
+        private String token;//token
         
+        //gettter for token
         public String getToken() {
             return token;
         }
-
+        
+        //gettter for password
 	public String getPwd() {
 		return pwd;
 	}
 
+        //setter for password
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
 
+        //gettter for message
 	public String getMsg() {
 		return msg;
 	}
 
+        //setter for message
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
 
+        //gettter for username
 	public String getUser() {
 		return user;
 	}
-
+ 
+        //setter for username
 	public void setUser(String user) {
 		this.user = user;
 	}
         
+        //gettter for usertype
         public String getUserType() {
             return userType;
         }
 
+        //setter for usertype
         public void setUserType(String userType) {
             this.userType = userType;
         }
         
+        //return userID by passing username and password
         public long userID()
         {
          long id = newUserBean.getUserID(user, pwd);
@@ -87,9 +99,12 @@ public class login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() 
         {
+                //return true or false by validating username and password 
 		boolean valid = newUserBean.validate(user, pwd);
 		if (valid) {
+                        //if validate http session set to current session 
 			HttpSession session = SessionBean.getSession();
+                        //setting username in newUserBean ejb
                         newUserBean.setUserName(user);
                         //newUserBean.getUserID(user, pwd);
                       if(user.equalsIgnoreCase("toor"))//if user logged in redirect to admin pane;
@@ -104,10 +119,10 @@ public class login implements Serializable {
                       }
                        else
                       {
-                          post.generateToken();
-                          this.token=post.getToken();
+                          post.generateToken();//generate token
+                          this.token=post.getToken(); //get the generated token
                           session.setAttribute("username", user);
-                          session.setAttribute("type","user");
+                          session.setAttribute("type","user");//assign the usertype
                           session.setAttribute("token",post.getToken());
                           session.setMaxInactiveInterval(20*60);
                      
@@ -115,7 +130,7 @@ public class login implements Serializable {
                       }
 			
 			
-		} else {
+		} else {//message if validate failed
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_WARN,
@@ -131,23 +146,7 @@ public class login implements Serializable {
 		session.invalidate();
 		return "login";
 	}
-        
-      /*  private static boolean validate(String user, String pwd)
-        {
-          if(user.equals("joe") & pwd.equals("1D10T?"))
-          {
-           return true;
-          }
-          else if(user.equals("toor") & pwd.equals("4uIdo0!"))
-          {
-           return true;
-          }
-          else
-          {
-           return false;
-          }
-        }*/
-
+       
     /**
      *
      * @param url
