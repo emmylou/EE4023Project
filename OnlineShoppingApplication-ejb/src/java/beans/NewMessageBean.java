@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.jms.JMSDestinationDefinition;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -18,8 +19,9 @@ import javax.jms.TextMessage;
  *
  * @author ankit
  */
+@JMSDestinationDefinition(name = "java:app/MyMsgQueue", interfaceName = "javax.jms.Queue", resourceAdapter = "jmsra", destinationName = "MyMsgQueue")
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "jms/dest"),
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:app/MyMsgQueue"),
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
 public class NewMessageBean implements MessageListener {
@@ -30,13 +32,11 @@ public class NewMessageBean implements MessageListener {
     @Override
     public void onMessage(Message message) {
         try {
-            TextMessage tmsg = null;
-            tmsg = (TextMessage)message;
-            System.out.println(tmsg.getText());
+            TextMessage gmsg = (TextMessage) message;
+            System.out.println(gmsg.getText());
         } catch (JMSException ex) {
             Logger.getLogger(NewMessageBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
 }

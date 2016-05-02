@@ -34,8 +34,8 @@ import javax.persistence.Query;
  */
 @Stateful
 public class ShoppingCartBean implements ShoppingCartBeanLocal {
-    @Resource(mappedName = "jms/dest")
-    private Queue dest;
+    @Resource(mappedName = "java:app/MyMsgQueue")
+    private Queue java_appMyMsgQueue;
     @Inject
     @JMSConnectionFactory("java:comp/DefaultJMSConnectionFactory")
     private JMSContext context;
@@ -69,8 +69,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         
         //message driven bean
         //logging
-        sendJMSMessageToDest(temp);
-        
+        sendJMSMessageToMyMsgQueue(temp);
         //command line server log file
         LOGGER.info(temp);
     }
@@ -92,8 +91,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             
             //message driven bean
             //logging
-            sendJMSMessageToDest(temp);
-
+            sendJMSMessageToMyMsgQueue(temp);
             //command line server log file
             LOGGER.info(temp);
         } 
@@ -106,8 +104,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
             
             //message driven bean
             //logging
-            sendJMSMessageToDest(temp);
-        
+            sendJMSMessageToMyMsgQueue(temp);
             //command line server log file
             LOGGER.info(temp); }
         
@@ -194,7 +191,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         String value = String.format("%1$-10s %2$-50s %3$-10s %4$-10s", "User", "|Product", "|Quantity", "|Status");
         //message driven bean
         //logging
-        sendJMSMessageToDest(value);
+        sendJMSMessageToMyMsgQueue(value);
         
         //command line server log file
         LOGGER.info(value);
@@ -207,8 +204,8 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
       
             //message driven bean
             //logging
-            sendJMSMessageToDest(temp);
-        
+            sendJMSMessageToMyMsgQueue(temp);
+            
             //command line server log file
             LOGGER.info(temp);
         }
@@ -341,7 +338,7 @@ public class ShoppingCartBean implements ShoppingCartBeanLocal {
         }
     }
 
-    private void sendJMSMessageToDest(String messageData) {
-        context.createProducer().send(dest, messageData);
+    private void sendJMSMessageToMyMsgQueue(String messageData) {
+        context.createProducer().send(java_appMyMsgQueue, messageData);
     }
 }
