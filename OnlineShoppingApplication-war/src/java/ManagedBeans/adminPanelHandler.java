@@ -15,6 +15,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import statics.post;
 
+/*
+Emmylou Flores 12132403
+Ankit Kumar Baliyan 13009753
+Joshua Hetherington 13061283
+Vishrut Krashak 12085766
+*/
+
 /**
  *
  * @author Emmylou Flores 12132403

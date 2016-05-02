@@ -23,6 +23,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 
+/*
+Emmylou Flores 12132403
+Ankit Kumar Baliyan 13009753
+Joshua Hetherington 13061283
+Vishrut Krashak 12085766
+*/
 
 /**
  *

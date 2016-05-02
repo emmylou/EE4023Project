@@ -13,6 +13,12 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 
+/*
+Emmylou Flores 12132403
+Ankit Kumar Baliyan 13009753
+Joshua Hetherington 13061283
+Vishrut Krashak 12085766
+*/
 
 /**
  *

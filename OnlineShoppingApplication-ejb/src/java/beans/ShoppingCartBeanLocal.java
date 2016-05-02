@@ -8,9 +8,16 @@ package beans;
 import java.util.HashMap;
 import javax.ejb.Local;
 
+/*
+Emmylou Flores 12132403
+Ankit Kumar Baliyan 13009753
+Joshua Hetherington 13061283
+Vishrut Krashak 12085766
+*/
+
 /**
  *
- * @author
+ * @author Ankit
  */
 @Local
 public interface ShoppingCartBeanLocal
